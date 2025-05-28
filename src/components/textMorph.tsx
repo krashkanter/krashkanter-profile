@@ -36,12 +36,10 @@ export const TextMorph: React.FC<TextMorphProps> = ({ strings }) => {
           setMorphFraction((prevMorph) => {
             const newMorph = prevMorph + dt / morphTime;
             if (newMorph >= 1) {
-              // Stop if we're at the last text
               if (textIndex == texts.length - 2) {
                 setIsComplete(true);
                 return 1;
               }
-              // Otherwise advance
               setTextIndex(textIndex + 1);
               setCooldownRemaining(cooldownTime);
               return 0;
@@ -89,10 +87,13 @@ export const TextMorph: React.FC<TextMorphProps> = ({ strings }) => {
 
       const t1Opacity = Math.pow(1 - eased, 0.4);
       const t1Blur = eased > 0 ? Math.min(8 / (1 - eased + 0.1) - 8, 100) : 0;
+
       text1Element.style.opacity = `${t1Opacity * 100}%`;
       text1Element.style.filter = `blur(${Math.max(0, t1Blur)}px)`;
+
       const t2Opacity = Math.pow(eased, 0.4);
       const t2Blur = eased < 1 ? Math.min(8 / (eased + 0.1) - 8, 100) : 0;
+
       text2Element.style.opacity = `${t2Opacity * 100}%`;
       text2Element.style.filter = `blur(${Math.max(0, t2Blur)}px)`;
     }
@@ -102,18 +103,21 @@ export const TextMorph: React.FC<TextMorphProps> = ({ strings }) => {
     <>
       <div
         id="container"
-        className={`absolute top-0 bottom-0 m-auto h-32 w-screen`}
+        className={`top-0 bottom-0 h-32 w-screen`}
         style={{ filter: "url(#threshold) blur(0.3px)" }}
       >
+        <span className="absolute mt-24 inline-block w-full text-start text-6xl text-neutral-400 antialiased select-none">
+          Profile
+        </span>
         <span
           id="text1"
           ref={text1Ref}
-          className="absolute inline-block w-full text-center text-7xl text-neutral-700 antialiased select-none"
+          className="absolute inline-block w-full bg-gradient-to-r from-blue-800 via-blue-400 to-blue-900 bg-clip-text text-start text-8xl text-transparent antialiased select-none"
         ></span>
         <span
           id="text2"
           ref={text2Ref}
-          className="absolute inline-block w-full text-center text-7xl text-neutral-700 antialiased select-none"
+          className="absolute inline-block w-full bg-gradient-to-r from-blue-800 via-blue-400 to-blue-900 bg-clip-text text-start text-8xl text-transparent antialiased select-none"
         ></span>
       </div>
       <svg id="filters" className="absolute h-0 w-0">
@@ -123,9 +127,9 @@ export const TextMorph: React.FC<TextMorphProps> = ({ strings }) => {
               in="SourceGraphic"
               type="matrix"
               values="1 0 0 0 0
-                      0 1 0 0 0
-                      0 0 1 0 0
-                      0 0 0 255 -140"
+              0 1 0 0 0
+              0 0 1 0 0
+              0 0 0 255 -140"
             />
           </filter>
         </defs>
