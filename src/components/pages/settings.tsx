@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { Orbitron } from "next/font/google";
+// import SwitchUi from "../ui/switch";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -32,7 +33,7 @@ export default function Settings() {
         exit={{ y: -200, opacity: 0 }}
         whileHover={{ scale: 1.1, rotateZ: -5 }}
         transition={{ type: "spring", stiffness: 40, damping: 15, delay: 0.2 }}
-        className="flex h-2/3 -translate-x-40 translate-y-10 items-end justify-center rounded-r-4xl border-1 border-neutral-200 bg-neutral-300 shadow-2xl shadow-neutral-200"
+        className="flex h-2/3 -translate-x-40 translate-y-10 flex-col items-end justify-center rounded-r-4xl border-1 border-neutral-200 bg-neutral-300 shadow-2xl shadow-neutral-200"
       ></motion.div>
     </>
   );

@@ -28,17 +28,36 @@ const ScrollWheel = React.forwardRef<
   }));
 
   const getAngle = useCallback(
-    (centerX: number, centerY: number, mouseX: number, mouseY: number) => {
-      const dx = mouseX - centerX;
-      const dy = mouseY - centerY;
+    (centerX: number, centerY: number, clientX: number, clientY: number) => {
+      const dx = clientX - centerX;
+      const dy = clientY - centerY;
       return Math.atan2(dy, dx) * (180 / Math.PI);
     },
     [],
   );
 
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      if (e.button !== 0) return;
+  const getEventCoordinates = useCallback(
+    (e: React.MouseEvent | React.TouchEvent) => {
+      if ("touches" in e && e.touches.length > 0) {
+        return {
+          clientX: e.touches[0]!.clientX,
+          clientY: e.touches[0]!.clientY,
+        };
+      }
+      return {
+        clientX: (e as React.MouseEvent).clientX,
+        clientY: (e as React.MouseEvent).clientY,
+      };
+    },
+    [],
+  );
+
+  const handleStart = useCallback(
+    (e: React.MouseEvent | React.TouchEvent) => {
+      e.preventDefault();
+
+      // For mouse events, only handle left click
+      if ("button" in e && e.button !== 0) return;
 
       if (!wheelRef.current) return;
       setIsDragging(true);
@@ -47,25 +66,23 @@ const ScrollWheel = React.forwardRef<
       const rect = wheelRef.current.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-      const initialAngle = getAngle(centerX, centerY, e.clientX, e.clientY);
+      const { clientX, clientY } = getEventCoordinates(e);
+      const initialAngle = getAngle(centerX, centerY, clientX, clientY);
       setStartAngle(initialAngle);
     },
-    [getAngle],
+    [getAngle, getEventCoordinates],
   );
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
+  const handleMove = useCallback(
+    (e: React.MouseEvent | React.TouchEvent) => {
       if (!isDragging || !wheelRef.current) return;
+      e.preventDefault();
 
       const rect = wheelRef.current.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-      const currentMouseAngle = getAngle(
-        centerX,
-        centerY,
-        e.clientX,
-        e.clientY,
-      );
+      const { clientX, clientY } = getEventCoordinates(e);
+      const currentMouseAngle = getAngle(centerX, centerY, clientX, clientY);
 
       let deltaAngle = currentMouseAngle - startAngle;
 
@@ -94,10 +111,11 @@ const ScrollWheel = React.forwardRef<
       getAngle,
       onScroll,
       scrollThreshold,
+      getEventCoordinates,
     ],
   );
 
-  const handleMouseUp = useCallback(() => {
+  const handleEnd = useCallback(() => {
     setIsDragging(false);
     if (wheelRef.current) {
       wheelRef.current.style.cursor = "grab";
@@ -105,7 +123,7 @@ const ScrollWheel = React.forwardRef<
   }, []);
 
   useEffect(() => {
-    const handleGlobalMouseUp = () => {
+    const handleGlobalEnd = (e: MouseEvent | TouchEvent) => {
       if (isDragging) {
         setIsDragging(false);
         if (wheelRef.current) {
@@ -114,26 +132,37 @@ const ScrollWheel = React.forwardRef<
       }
     };
 
-    window.addEventListener("mouseup", handleGlobalMouseUp);
+    window.addEventListener("mouseup", handleGlobalEnd);
+    window.addEventListener("touchend", handleGlobalEnd);
+    window.addEventListener("touchcancel", handleGlobalEnd);
+
     return () => {
-      window.removeEventListener("mouseup", handleGlobalMouseUp);
+      window.removeEventListener("mouseup", handleGlobalEnd);
+      window.removeEventListener("touchend", handleGlobalEnd);
+      window.removeEventListener("touchcancel", handleGlobalEnd);
     };
   }, [isDragging]);
 
   return (
-    <div
-      ref={wheelRef}
-      className="relative flex h-100 w-100 cursor-grab items-center justify-center overflow-hidden rounded-full border-4 border-neutral-600 bg-gradient-to-br from-neutral-600 to-neutral-700 transition-all duration-100 ease-out select-none"
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
-      style={{ transform: `rotate(${currentRotation}deg)` }}
-    >
+    <>
       <div
-        className="absolute inset-0 rounded-full"
+        ref={wheelRef}
+        className="relative flex h-100 w-100 cursor-grab touch-none items-center justify-center overflow-hidden rounded-full border-2 border-neutral-400 bg-gradient-to-br from-neutral-100 to-neutral-300 transition-all duration-100 ease-out select-none"
+        onMouseDown={handleStart}
+        onMouseMove={handleMove}
+        onMouseUp={handleEnd}
+        onTouchStart={handleStart}
+        onTouchMove={handleMove}
+        onTouchEnd={handleEnd}
         style={{
-          background: `
+          transform: `rotate(${currentRotation}deg)`,
+          touchAction: "none",
+        }}
+      >
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{
+            background: `
             radial-gradient(circle at center,
               transparent 40%, /* Inner transparent part */
               rgba(255,255,255,0.05) 45%, /* Subtle inner edge */
@@ -149,15 +178,27 @@ const ScrollWheel = React.forwardRef<
               transparent 6px /* Gap thickness */
             )
           `,
-          backgroundSize: "100% 100%, 100% 100%",
-          backgroundPosition: "center center",
-          zIndex: 0,
-          pointerEvents: "none",
-        }}
-      ></div>
-
-      <div className="absolute z-10 flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-neutral-400 to-neutral-500 text-xl font-bold text-neutral-800"></div>
-    </div>
+            backgroundSize: "100% 100%, 100% 100%",
+            backgroundPosition: "center center",
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
+        ></div>
+      </div>
+      <div className="absolute z-10 flex h-28 w-28 items-center justify-center rounded-full border-1 border-neutral-500 bg-gradient-to-br from-neutral-300 to-neutral-400 text-xl font-bold text-neutral-800"></div>
+      <div className="absolute top-140 z-10 flex h-28 w-28 items-center justify-center rounded-full text-xl font-bold text-neutral-800 select-none">
+        ↩️
+      </div>
+      <div className="absolute top-205 z-10 flex h-28 w-28 items-center justify-center rounded-full text-xl font-bold text-neutral-800 select-none">
+        ⏯️
+      </div>
+      <div className="absolute left-28 z-10 flex h-28 w-28 items-center justify-center rounded-full text-xl font-bold text-neutral-800 select-none">
+        ⏮️
+      </div>
+      <div className="absolute right-28 z-10 flex h-28 w-28 items-center justify-center rounded-full text-xl font-bold text-neutral-800 select-none">
+        ⏭️
+      </div>
+    </>
   );
 });
 

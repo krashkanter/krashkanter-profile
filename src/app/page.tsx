@@ -28,7 +28,7 @@ export default function Home() {
 
   return (
     <main
-      className={`flex max-h-screen flex-row items-center justify-between overflow-hidden bg-white text-black`}
+      className={`flex max-h-900 min-w-300 flex-row items-center justify-between overflow-x-hidden bg-white text-black`}
     >
       <div className={`flex h-[100vh] max-h-screen w-1/2 flex-col`}>
         <AnimatePresence mode="wait">

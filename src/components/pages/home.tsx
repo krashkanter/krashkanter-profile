@@ -21,7 +21,7 @@ export default function Landing() {
           stiffness: 80,
           damping: 15,
         }}
-        className={`${orbitron.className} flex h-1/3 items-center justify-center pl-4`}
+        className={`${orbitron.className} flex h-1/3 items-center justify-center`}
       >
         <TextMorph strings={["KrashKanter", "Keerthan"]} />
       </motion.div>
