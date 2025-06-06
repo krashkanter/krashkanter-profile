@@ -123,7 +123,7 @@ const ScrollWheel = React.forwardRef<
   }, []);
 
   useEffect(() => {
-    const handleGlobalEnd = (e: MouseEvent | TouchEvent) => {
+    const handleGlobalEnd = () => {
       if (isDragging) {
         setIsDragging(false);
         if (wheelRef.current) {
@@ -147,7 +147,7 @@ const ScrollWheel = React.forwardRef<
     <>
       <div
         ref={wheelRef}
-        className="relative flex h-100 w-100 cursor-grab touch-none items-center justify-center overflow-hidden rounded-full border-2 border-neutral-400 bg-gradient-to-br from-neutral-100 to-neutral-300 transition-all duration-100 ease-out select-none"
+        className="relative flex h-100 w-100 cursor-grab touch-none items-center justify-center overflow-hidden rounded-full border-2 border-neutral-400 bg-gradient-to-br from-neutral-100 to-neutral-300 ease-out select-none"
         onMouseDown={handleStart}
         onMouseMove={handleMove}
         onMouseUp={handleEnd}
@@ -186,16 +186,16 @@ const ScrollWheel = React.forwardRef<
         ></div>
       </div>
       <div className="absolute z-10 flex h-28 w-28 items-center justify-center rounded-full border-1 border-neutral-500 bg-gradient-to-br from-neutral-300 to-neutral-400 text-xl font-bold text-neutral-800"></div>
-      <div className="absolute top-140 z-10 flex h-28 w-28 items-center justify-center rounded-full text-xl font-bold text-neutral-800 select-none">
+      <div className="absolute top-150 z-10 flex cursor-pointer items-center justify-center rounded-full text-xl font-bold text-neutral-800 transition-all duration-500 select-none hover:scale-175">
         ↩️
       </div>
-      <div className="absolute top-205 z-10 flex h-28 w-28 items-center justify-center rounded-full text-xl font-bold text-neutral-800 select-none">
+      <div className="absolute top-215 z-10 flex cursor-pointer items-center justify-center rounded-full text-xl font-bold text-neutral-800 transition-all duration-500 select-none hover:scale-175">
         ⏯️
       </div>
-      <div className="absolute left-28 z-10 flex h-28 w-28 items-center justify-center rounded-full text-xl font-bold text-neutral-800 select-none">
+      <div className="absolute left-38 z-10 flex cursor-pointer items-center justify-center rounded-full text-xl font-bold text-neutral-800 transition-all duration-500 select-none hover:scale-175">
         ⏮️
       </div>
-      <div className="absolute right-28 z-10 flex h-28 w-28 items-center justify-center rounded-full text-xl font-bold text-neutral-800 select-none">
+      <div className="absolute right-38 z-10 flex cursor-pointer items-center justify-center rounded-full text-xl font-bold text-neutral-800 transition-all duration-500 select-none hover:scale-175">
         ⏭️
       </div>
     </>

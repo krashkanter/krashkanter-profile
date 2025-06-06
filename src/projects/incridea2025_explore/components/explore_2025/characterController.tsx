@@ -9,7 +9,7 @@ import { MathUtils, Raycaster, Vector3 } from "three";
 import { degToRad } from "three/src/math/MathUtils.js";
 import { Character } from "../../components/explore_2025/Character";
 import stonesData from "../../components/explore_2025/data/data.json";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 // import { UpdateStoneVisibilitiesDocument } from "~/generated/generated";
 // import { useAuth } from "~/hooks/useAuth";
 
@@ -65,7 +65,7 @@ export const CharacterController = () => {
   const [isLandscape, setIsLandscape] = useState(
     window.innerWidth > window.innerHeight,
   );
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     const handleResize = () => {
@@ -385,7 +385,7 @@ export const CharacterController = () => {
                 if (location.id != 4) {
                   window.open(location.href, "_blank");
                 } else {
-                  void router.push(location.href);
+                  // void router.push(location.href);
                 }
               } else {
                 toast(

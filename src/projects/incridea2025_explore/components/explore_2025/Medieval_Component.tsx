@@ -4,6 +4,12 @@ import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { gsap } from "gsap";
 import React, { Suspense, useEffect, useRef, useState } from "react";
+import {
+  EffectComposer,
+  Bloom,
+  Noise,
+  Vignette,
+} from "@react-three/postprocessing";
 
 import * as UIButtons from "../../components/explore_2025/UI";
 import { CharacterController } from "../../components/explore_2025/characterController";
@@ -92,8 +98,9 @@ export const Experience = () => {
               fov: isLandscape ? 60 : 100,
             }}
             className="absolute inset-0"
-            gl={{ antialias: false, pixelRatio: 0.1 }}
+            gl={{ antialias: true, pixelRatio: 1 }}
             id="canvas"
+            dpr={[1, 2]}
           >
             <Suspense fallback={null}>
               <color attach="background" args={["#ffffff"]} />
@@ -104,8 +111,8 @@ export const Experience = () => {
                   intensity={3}
                   castShadow
                   position={[-5, 20, -15]}
-                  shadow-mapSize-width={256}
-                  shadow-mapSize-height={256}
+                  shadow-mapSize-width={2048}
+                  shadow-mapSize-height={2048}
                   shadow-bias={-0.00005}
                 >
                   <OrthographicCamera
@@ -126,6 +133,15 @@ export const Experience = () => {
               </Physics>
               <Poi />
               <Sky />
+              <EffectComposer>
+                <Bloom
+                  luminanceThreshold={10}
+                  luminanceSmoothing={0.1}
+                  height={300}
+                />
+                <Noise opacity={0.01} />
+                <Vignette eskil={false} offset={0.1} darkness={0.5} />
+              </EffectComposer>
             </Suspense>
           </Canvas>
         </KeyboardControls>

@@ -1,26 +1,27 @@
 import * as THREE from "three";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
-
-import linksData from "../../components/explore_2025/data/data.json";
 import { CONSTANT } from "../../constants";
 
-type Link = {
-  id: number;
-  link: string;
-};
+// import linksData from "../../components/explore_2025/data/data.json";
+// import { CONSTANT } from "../../constants";
+
+// type Link = {
+//   id: number;
+//   link: string;
+// };
 
 type MapProps = {
   model: never;
   [key: string]: never;
 };
 
-const links: Link[] = linksData.links.map((link) => ({
-  ...link,
-  link: link.link,
-}));
+// const links: Link[] = linksData.links.map((link) => ({
+//   ...link,
+//   link: link.link,
+// }));
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const Map = ({ model, ...props }: MapProps) => {
@@ -29,7 +30,7 @@ export const Map = ({ model, ...props }: MapProps) => {
   ) as never;
   const group = useRef<THREE.Group>(null);
   const { actions } = useAnimations(animations as THREE.AnimationClip[], group);
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -278,9 +279,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials.animeverse as THREE.Material}
           position={[-6.043, 1.152, -17.504]}
           rotation={[Math.PI / 2, 0, 0]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="AntakshariPostFinal"
@@ -294,9 +292,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials.AntakshariPostFinal as THREE.Material}
           position={[-2.743, 1.152, -17.504]}
           rotation={[Math.PI / 2, 0, 0]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="bits_with_benifits"
@@ -308,9 +303,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["bits with benifits"]}
           position={[-4.943, 1.152, -17.504]}
           rotation={[Math.PI / 2, 0, 0]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="final1080plss"
@@ -324,9 +316,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials.final1080plss as THREE.Material}
           position={[-7.143, 1.151, -17.504]}
           rotation={[Math.PI / 2, 0, -0.14]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="Jam_1080x1080"
@@ -338,9 +327,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["Jam 1080x1080"]}
           position={[-9.19, 1.151, -16.574]}
           rotation={[Math.PI / 2, 0, -0.733]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="mad_ad_insta"
@@ -352,9 +338,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["mad ad insta"]}
           position={[-3.843, 1.152, -17.504]}
           rotation={[Math.PI / 2, 0, 0]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="meme_wars"
@@ -366,9 +349,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["meme wars"]}
           position={[-1.638, 1.152, -17.504]}
           rotation={[Math.PI / 2, 0, 0]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="Roadies_Posters@2x"
@@ -378,9 +358,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["Roadies Posters@2x"]}
           position={[-8.251, 1.151, -17.2]}
           rotation={[Math.PI / 2, 0, -0.471]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="Non_technical"
@@ -407,9 +384,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials.Respawn as THREE.Material}
           position={[-10.461, 1.152, -9.364]}
           rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="Thinking_Cap_squar"
@@ -421,9 +395,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["Thinking Cap [squar]"]}
           position={[-10.461, 1.152, -11.564]}
           rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="Special"
@@ -437,9 +408,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials.Material as THREE.Material}
           position={[-10.46, 2.152, -9.774]}
           rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="post"
@@ -453,9 +421,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials.post as THREE.Material}
           position={[-10.459, 1.152, -10.464]}
           rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="paint_nd_pixel_insta"
@@ -467,9 +432,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["paint nd pixel insta"]}
           position={[-10.466, 1.151, -12.664]}
           rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="bomb_squad_10"
@@ -481,9 +443,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["bomb squad 10"]}
           position={[0.72, 1.151, -3.719]}
           rotation={[Math.PI / 2, 0, 2.845]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="cc-insta_Final"
@@ -493,9 +452,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["cc-insta Final"]}
           position={[-6.83, 1.151, -3.59]}
           rotation={[Math.PI / 2, 0, -3.054]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="civil_instagram_final"
@@ -507,9 +463,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["civil instagram final"]}
           position={[-1.54, 1.151, -3.57]}
           rotation={[Math.PI / 2, 0, Math.PI]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="Code-Relay@Square"
@@ -519,9 +472,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["Code-Relay@Square"]}
           position={[2.547, 1.151, -4.918]}
           rotation={[Math.PI / 2, 0, 2.286]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="Escape_RoomSquar-1"
@@ -531,9 +481,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["Escape Room[Squar]-1"]}
           position={[-4.698, 1.151, -3.57]}
           rotation={[Math.PI / 2, 0, Math.PI]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="IMG_2654"
@@ -547,9 +494,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials.IMG_2654 as THREE.Material}
           position={[-3.648, 1.151, -3.57]}
           rotation={[Math.PI / 2, 0, Math.PI]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="insta"
@@ -563,9 +507,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials.insta as THREE.Material}
           position={[-7.985, 1.151, -3.874]}
           rotation={[Math.PI / 2, 0, -2.827]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="Lakshman_rekha_1_1"
@@ -577,9 +518,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["Lakshman rekha 1_1"] as THREE.Material}
           position={[1.737, 1.151, -4.212]}
           rotation={[Math.PI / 2, 0, 2.531]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="post001"
@@ -593,9 +531,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials.post as THREE.Material}
           position={[-9.062, 1.151, -4.472]}
           rotation={[Math.PI / 2, 0, -2.461]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="Robosoccer_1080x1080"
@@ -607,9 +542,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["Robosoccer 1080x1080"]}
           position={[-0.415, 1.151, -3.57]}
           rotation={[Math.PI / 2, 0, Math.PI]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="Sherlocked@square"
@@ -619,9 +551,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["Sherlocked@square"]}
           position={[-9.841, 1.151, -5.36]}
           rotation={[Math.PI / 2, 0, -2.164]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="square_"
@@ -635,9 +564,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials.square_ as THREE.Material}
           position={[-2.585, 1.151, -3.57]}
           rotation={[Math.PI / 2, 0, Math.PI]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="wired_square"
@@ -649,9 +575,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           material={materials["wired square"]}
           position={[-5.751, 1.151, -3.57]}
           rotation={[Math.PI / 2, 0, Math.PI]}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          onClick={() => router.push(links[0].link)}
         />
         <mesh
           name="technical"

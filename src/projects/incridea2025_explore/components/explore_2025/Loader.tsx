@@ -1,6 +1,6 @@
 import { useProgress } from "@react-three/drei";
 import { gsap } from "gsap";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React, { useEffect, useRef, useState } from "react";
 
 const LoadingScreen = ({ images }: { images: string[] }) => {
