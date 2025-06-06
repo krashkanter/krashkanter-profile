@@ -3,15 +3,15 @@
 import { motion, AnimatePresence } from "motion/react";
 
 import App from "~/components/device/device";
-import Landing from "~/components/pages/home";
-import Profile from "~/components/pages/profile";
-import Files from "~/components/pages/files";
-import Tools from "~/components/pages/tools";
-import Contacts from "~/components/pages/contacts";
-import Settings from "~/components/pages/settings";
+import Landing from "~/components/screens/home";
+import Profile from "~/components/screens/profile";
+import Files from "~/components/screens/files";
+import Tools from "~/components/screens/tools";
+import Contacts from "~/components/screens/contacts";
+import Settings from "~/components/screens/settings";
 
 import { useState } from "react";
-import Help from "~/components/pages/help";
+import Help from "~/components/screens/help";
 
 export default function Home() {
   const [selectedItem, setSelectedItem] = useState(0);
