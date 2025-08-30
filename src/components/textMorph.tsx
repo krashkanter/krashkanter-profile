@@ -3,11 +3,20 @@ import { useEffect, useRef, useState, useMemo } from "react";
 
 interface TextMorphProps {
   strings: string[];
+  /**
+   * Determines if the animation should loop indefinitely.
+   * @default false
+   */
+  loop?: boolean;
 }
 
-export const TextMorph: React.FC<TextMorphProps> = ({ strings }) => {
+export const TextMorph: React.FC<TextMorphProps> = ({
+  strings,
+  loop = false,
+}) => {
   const text1Ref = useRef<HTMLSpanElement>(null);
   const text2Ref = useRef<HTMLSpanElement>(null);
+  // useMemo is great here to prevent re-calculations if the parent component re-renders with the same strings array.
   const texts = useMemo(() => strings, [strings]);
   const morphTime = 5;
   const cooldownTime = 1;
@@ -15,6 +24,7 @@ export const TextMorph: React.FC<TextMorphProps> = ({ strings }) => {
   const [textIndex, setTextIndex] = useState(0);
   const [morphFraction, setMorphFraction] = useState(0);
   const [cooldownRemaining, setCooldownRemaining] = useState(cooldownTime);
+  // isComplete is now only relevant when loop is false.
   const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
@@ -25,6 +35,7 @@ export const TextMorph: React.FC<TextMorphProps> = ({ strings }) => {
       const dt = (currentTime - lastTime) / 1000;
       lastTime = currentTime;
 
+      // Stop the animation if it's complete (and we are not looping)
       if (isComplete) {
         return;
       }
@@ -36,13 +47,20 @@ export const TextMorph: React.FC<TextMorphProps> = ({ strings }) => {
           setMorphFraction((prevMorph) => {
             const newMorph = prevMorph + dt / morphTime;
             if (newMorph >= 1) {
-              if (textIndex == texts.length - 2) {
+              const nextIndex = textIndex + 1;
+
+              // CHANGE 1: Logic to handle looping or stopping
+              if (!loop && nextIndex >= texts.length - 1) {
+                // If not looping and we've reached the end, mark as complete.
                 setIsComplete(true);
-                return 1;
+                return 1; // Keep the final text fully morphed
+              } else {
+                // If looping, or not yet at the end, calculate the next index.
+                // The modulo operator (%) ensures the index wraps around to 0 for looping.
+                setTextIndex((prevIndex) => (prevIndex + 1) % texts.length);
+                setCooldownRemaining(cooldownTime);
+                return 0; // Reset morph for the next transition
               }
-              setTextIndex(textIndex + 1);
-              setCooldownRemaining(cooldownTime);
-              return 0;
             }
             return newMorph;
           });
@@ -57,7 +75,8 @@ export const TextMorph: React.FC<TextMorphProps> = ({ strings }) => {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [texts.length, morphTime, cooldownTime, isComplete, textIndex]);
+    // Added 'loop' to the dependency array.
+  }, [texts.length, morphTime, cooldownTime, isComplete, textIndex, loop]);
 
   useEffect(() => {
     const text1Element = text1Ref.current;
@@ -65,22 +84,28 @@ export const TextMorph: React.FC<TextMorphProps> = ({ strings }) => {
 
     if (!text1Element || !text2Element) return;
 
+    // Set the content for the current and next text elements
     text1Element.textContent = texts[textIndex] ?? "";
-    if (textIndex + 1 < texts.length) {
-      text2Element.textContent = texts[textIndex + 1] ?? "";
-    }
 
+    // CHANGE 2: Use modulo to get the next text, which handles the loop from the last to the first string.
+    const nextTextIndex = (textIndex + 1) % texts.length;
+    text2Element.textContent = texts[nextTextIndex] ?? "";
+
+    // The rest of this effect handles the visual styling based on animation state.
     if (isComplete) {
+      // Final state for one-time animation
       text1Element.style.filter = "";
       text1Element.style.opacity = "0%";
       text2Element.style.filter = "";
       text2Element.style.opacity = "100%";
     } else if (cooldownRemaining > 0) {
+      // Cooldown state (text is stable)
       text1Element.style.filter = "";
       text1Element.style.opacity = "100%";
       text2Element.style.filter = "";
       text2Element.style.opacity = "0%";
     } else {
+      // Morphing state
       const easeInOut = (t: number) =>
         t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
       const eased = easeInOut(morphFraction);
@@ -106,9 +131,6 @@ export const TextMorph: React.FC<TextMorphProps> = ({ strings }) => {
         className={`top-0 bottom-0 h-32 w-screen`}
         style={{ filter: "url(#threshold) blur(0.3px)" }}
       >
-        <span className="absolute mt-24 inline-block w-full text-start text-6xl text-neutral-400 antialiased select-none">
-          Profile
-        </span>
         <span
           id="text1"
           ref={text1Ref}
@@ -127,9 +149,9 @@ export const TextMorph: React.FC<TextMorphProps> = ({ strings }) => {
               in="SourceGraphic"
               type="matrix"
               values="1 0 0 0 0
-              0 1 0 0 0
-              0 0 1 0 0
-              0 0 0 255 -140"
+                      0 1 0 0 0
+                      0 0 1 0 0
+                      0 0 0 255 -140"
             />
           </filter>
         </defs>

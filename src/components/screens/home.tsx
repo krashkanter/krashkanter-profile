@@ -23,7 +23,7 @@ export default function Landing() {
         }}
         className={`${orbitron.className} flex h-1/3 items-center justify-center`}
       >
-        <TextMorph strings={["KrashKanter", "Keerthan"]} />
+        <TextMorph strings={["KrashKanter", "Keerthan"]} loop={true} />
       </motion.div>
       <motion.div
         initial={{ x: -200, opacity: 0 }}

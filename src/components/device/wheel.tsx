@@ -187,7 +187,7 @@ const ScrollWheel = React.forwardRef<
       </div>
       <div className="absolute z-10 flex h-28 w-28 items-center justify-center rounded-full border-1 border-neutral-500 bg-gradient-to-br from-neutral-300 to-neutral-400 text-xl font-bold text-neutral-800"></div>
       <div className="absolute top-150 z-10 flex cursor-pointer items-center justify-center rounded-full text-xl font-bold text-neutral-800 transition-all duration-500 select-none hover:scale-175">
-        ↩️
+        MENU
       </div>
       <div className="absolute top-215 z-10 flex cursor-pointer items-center justify-center rounded-full text-xl font-bold text-neutral-800 transition-all duration-500 select-none hover:scale-175">
         ⏯️
