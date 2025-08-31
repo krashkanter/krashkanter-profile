@@ -19,7 +19,7 @@ export const TextMorph: React.FC<TextMorphProps> = ({
   // useMemo is great here to prevent re-calculations if the parent component re-renders with the same strings array.
   const texts = useMemo(() => strings, [strings]);
   const morphTime = 5;
-  const cooldownTime = 1;
+  const cooldownTime = 2;
 
   const [textIndex, setTextIndex] = useState(0);
   const [morphFraction, setMorphFraction] = useState(0);
@@ -128,18 +128,18 @@ export const TextMorph: React.FC<TextMorphProps> = ({
     <>
       <div
         id="container"
-        className={`top-0 bottom-0 h-32 w-screen`}
+        className={`top-0 bottom-0 h-32 w-screen pl-4`}
         style={{ filter: "url(#threshold) blur(0.3px)" }}
       >
         <span
           id="text1"
           ref={text1Ref}
-          className="absolute inline-block w-full bg-gradient-to-r from-blue-800 via-blue-400 to-blue-900 bg-clip-text text-start text-8xl text-transparent antialiased select-none"
+          className="absolute inline-block w-full bg-gradient-to-r from-blue-800 via-blue-400 to-blue-900 bg-clip-text text-start text-7xl font-extrabold text-transparent antialiased select-none pb-10"
         ></span>
         <span
           id="text2"
           ref={text2Ref}
-          className="absolute inline-block w-full bg-gradient-to-r from-blue-800 via-blue-400 to-blue-900 bg-clip-text text-start text-8xl text-transparent antialiased select-none"
+          className="absolute inline-block w-full bg-gradient-to-r from-blue-800 via-blue-400 to-blue-900 bg-clip-text text-start text-7xl font-extrabold text-transparent antialiased select-none pb-10"
         ></span>
       </div>
       <svg id="filters" className="absolute h-0 w-0">

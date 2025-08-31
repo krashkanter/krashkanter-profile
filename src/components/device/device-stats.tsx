@@ -1,6 +1,6 @@
 import { useBattery } from "@uidotdev/usehooks";
 
-export default function BatteryComponent() {
+export function BatteryComponent() {
   const { level, supported, charging } = useBattery();
 
   if (!supported) {
@@ -10,8 +10,8 @@ export default function BatteryComponent() {
   return (
     <div>
       <p>
-        🔋{charging ? "⚡️" : null}{" "}
-        {level != null ? Math.round(100 * level) : 100}%
+        {charging ? "⚡️" : null}{" "}
+        {level != null ? Math.round(100 * level) : 100}%🔋
       </p>
     </div>
   );

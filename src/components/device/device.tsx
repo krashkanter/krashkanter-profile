@@ -1,6 +1,7 @@
+"use client";
+
 import React, { useRef, useEffect, useCallback, useState } from "react";
-import ScrollWheel from "~/components/device/wheel";
-import BatteryComponent from "~/components/device/battery";
+import { BatteryComponent } from "~/components/device/device-stats";
 
 export default function App({
   selectedItem,
@@ -26,6 +27,35 @@ export default function App({
     null,
   );
   const scrollAccumulatorRef = useRef(0);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hoverProgress, setHoverProgress] = useState(0);
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+
+  useEffect(() => {
+    if (hoveredIndex !== null) {
+      setHoverProgress(0);
+      const start = Date.now();
+      progressIntervalRef.current = setInterval(() => {
+        const elapsed = Date.now() - start;
+        setHoverProgress(Math.min(elapsed / 750, 1));
+      }, 16);
+
+      hoverTimeoutRef.current = setTimeout(() => {
+        setSelectedItem(hoveredIndex);
+        setHoverProgress(1);
+      }, 750);
+    } else {
+      setHoverProgress(0);
+      if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    }
+    return () => {
+      if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    };
+  }, [hoveredIndex, setSelectedItem]);
 
   const handleScroll = useCallback(
     (direction: "up" | "down") => {
@@ -83,45 +113,14 @@ export default function App({
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="flex h-fit flex-col items-center justify-between gap-6 rounded-4xl border-1 border-neutral-300 bg-gradient-to-br from-neutral-500 to-neutral-800 text-black shadow-2xl shadow-neutral-300"
-    >
+      className="flex h-fit flex-col items-center justify-between gap-6 rounded-4xl border-1 border-neutral-700 bg-gradient-to-br from-neutral-600 to-neutral-900 text-black shadow-2xl shadow-neutral-800">
       <div
-        className="flex w-full flex-col items-center justify-between gap-6 rounded-4xl p-4"
+        className="flex w-full flex-col items-center justify-between gap-6 rounded-4xl p-2"
         style={{
           boxShadow: "inset 0 2px 60px 0px rgba(0,0,0, 0.2)",
         }}
       >
-        <div className="relative mt-12 flex h-100 w-full flex-col overflow-hidden rounded-3xl border-2 border-b-5 border-neutral-600 bg-white p-4 select-none">
-          {isPanelVisible && (
-            <div className="absolute top-0 left-0 right-0 z-10 h-full bg-slate-100 p-4 transition-all">
-              <div className="mb-4 text-lg font-bold text-slate-800">
-                Quick Panel
-              </div>
-              <div className="grid grid-cols-4 gap-4 text-center">
-                <div className="flex flex-col items-center gap-1 rounded-lg bg-blue-500 p-2 text-white">
-                  <span>📶</span>
-                  <span className="text-xs">Wi-Fi</span>
-                </div>
-                <div className="flex flex-col items-center gap-1 rounded-lg bg-slate-400 p-2 text-white">
-                  <span>🔇</span>
-                  <span className="text-xs">Silent</span>
-                </div>
-                <div className="flex flex-col items-center gap-1 rounded-lg bg-blue-500 p-2 text-white">
-                  <span>‎‎‎bluetooth</span>
-                  <span className="text-xs">BT</span>
-                </div>
-                <div className="flex flex-col items-center gap-1 rounded-lg bg-slate-400 p-2 text-white">
-                  <span>🔄️</span>
-                  <span className="text-xs">Rotate</span>
-                </div>
-              </div>
-              <div className="my-4 border-t border-slate-300"></div>
-              <div className="text-center text-sm text-slate-500">
-                No new notifications
-              </div>
-            </div>
-          )}
-
+        <div className="relative mt-1 flex h-100 w-full flex-col overflow-hidden rounded-3xl border-2 border-b-5 border-neutral-600 bg-white p-4 select-none">
           <div
             className="mb-2 flex cursor-pointer flex-row items-start justify-between gap-2 px-1"
             onClick={() => setIsPanelVisible(!isPanelVisible)}
@@ -131,29 +130,26 @@ export default function App({
               <BatteryComponent />
             </div>
           </div>
-          <div
-            ref={displayRef}
-            className="flex-grow overflow-y-scroll scroll-smooth pr-2"
-          >
+          <div key="menu-list">
             {menuItems.map((item, index) => (
               <div
                 key={item}
                 onClick={() => setSelectedItem(index)}
-                className={`rounded-md px-0 py-1 text-lg font-medium transition-all duration-200 ease-in-out cursor-pointer ${
-                  selectedItem === index
-                    ? "bg-gradient-to-r from-blue-500 to-blue-400 text-white shadow-md"
-                    : "text-neutral-900"
-                }`}
+                // onMouseEnter={() => setHoveredIndex(index)}
+                // onMouseLeave={() => setHoveredIndex(null)}
+                className={`relative rounded-md px-0 py-1 text-lg font-medium transition-all duration-200 ease-in-out cursor-pointer ${selectedItem === index
+                  ? "bg-gradient-to-r from-blue-500 to-blue-400 text-white shadow-md"
+                  : "text-neutral-900"
+                  }`}
               >
                 {item}
+                {/* {hoveredIndex === index && hoverProgress > 0 && hoverProgress < 1 && (
+                  <div className="absolute left-0 bottom-0 h-1 rounded-b-md bg-blue-400 transition-all duration-75"
+                    style={{ width: `${hoverProgress * 100}%` }}
+                  />
+                )} */}
               </div>
             ))}
-          </div>
-          <div className="flex flex-row items-center justify-between px-1">
-            <div className="text-sm text-gray-400">Protoype Build 0.1.0</div>
-            <div className="mt-2 text-right text-sm text-gray-400">
-              Selected: {menuItems[selectedItem]}
-            </div>
           </div>
         </div>
       </div>
