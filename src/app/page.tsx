@@ -142,7 +142,7 @@ export default function Home() {
         // animate={{ opacity: 1 }}
         // transition={{ duration: 1 }}
         // exit={{ opacity: 0 }}
-        className={`flex max-h-900 min-w-300 flex-row items-center justify-between overflow-hidden text-black`}
+        className={`flex max-h-900 min-w-300 flex-row items-center justify-between overflow-hidden text-black `}
       >
         <FluidSVGBackground />
         <div className={`flex h-[100vh] max-h-screen w-1/2 flex-col`}>
