@@ -3,7 +3,6 @@
 import { motion } from "motion/react";
 import { Orbitron, Meera_Inimai } from "next/font/google";
 import { TextMorph } from "~/components/textMorph";
-import { SquaredButton } from "../ui/Button";
 
 const orbitron = Orbitron({
   subsets: ["latin"],

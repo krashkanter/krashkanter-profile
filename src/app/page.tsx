@@ -203,7 +203,7 @@ export default function Home() {
                 ease: "easeInOut",
               },
             }}
-            className="flex max-h-screen flex-col gap-8 rounded-4xl bg-gradient-to-br from-pink-300 to-pink-500 p-8 md:w-130"
+            className="flex max-h-screen flex-col gap-8 p-8 md:w-130"
           >
             <Device
               selectedItem={selectedItem}
