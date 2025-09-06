@@ -6,10 +6,10 @@ import { Meera_Inimai } from "next/font/google";
 
 const meera = Meera_Inimai({
   subsets: ["latin"],
-  weight: "400"
+  weight: "400",
 });
 
-export default function App({
+export default function Device({
   selectedItem,
   setSelectedItem,
 }: {
@@ -20,10 +20,11 @@ export default function App({
     "🏠 Home",
     "🧑‍💼 Profile",
     "📂 Files",
-    "🛠️ Tools",
+    "🛠️ Projects",
     "📞 Contacts",
     "⚙️ Preferences",
     "❓ Help",
+    "💻 Terminal",
   ];
 
   const [isHovered, setIsHovered] = useState(false);
@@ -37,7 +38,6 @@ export default function App({
   const [hoverProgress, setHoverProgress] = useState(0);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
 
   useEffect(() => {
     if (hoveredIndex !== null) {
@@ -55,11 +55,13 @@ export default function App({
     } else {
       setHoverProgress(0);
       if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      if (progressIntervalRef.current)
+        clearInterval(progressIntervalRef.current);
     }
     return () => {
       if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      if (progressIntervalRef.current)
+        clearInterval(progressIntervalRef.current);
     };
   }, [hoveredIndex, setSelectedItem]);
 
@@ -119,7 +121,8 @@ export default function App({
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`flex h-fit flex-col items-center justify-between gap-6 rounded-4xl border-1 border-neutral-700 bg-gradient-to-br from-neutral-600 to-neutral-900 text-black shadow-2xl shadow-neutral-800 ${meera.className}`}>
+      className={`flex h-fit flex-col items-center justify-between gap-6 rounded-4xl border-1 border-neutral-700 bg-gradient-to-br from-neutral-600 to-neutral-900 text-black shadow-2xl shadow-neutral-800 ${meera.className}`}
+    >
       <div
         className="flex w-full flex-col items-center justify-between gap-6 rounded-4xl p-2"
         style={{
@@ -143,10 +146,11 @@ export default function App({
                 onClick={() => setSelectedItem(index)}
                 // onMouseEnter={() => setHoveredIndex(index)}
                 // onMouseLeave={() => setHoveredIndex(null)}
-                className={`relative rounded-md px-0 py-1 text-lg font-medium transition-all duration-200 ease-in-out ${selectedItem === index
-                  ? "bg-gradient-to-r from-blue-500 to-blue-400 text-white shadow-md"
-                  : "text-neutral-900"
-                  }`}
+                className={`relative rounded-md px-0 py-1 text-lg font-medium transition-all duration-200 ease-in-out ${
+                  selectedItem === index
+                    ? "bg-gradient-to-r from-blue-500 to-blue-400 text-white shadow-md"
+                    : "text-neutral-900"
+                }`}
               >
                 {item}
                 {/* {hoveredIndex === index && hoverProgress > 0 && hoverProgress < 1 && (

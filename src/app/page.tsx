@@ -4,14 +4,15 @@ import "~/styles/morphing-gradient.css";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
-import App from "~/components/device/device";
+import Device from "~/components/device/device";
 import About from "~/components/screens/about";
 import Files from "~/components/screens/files";
 import Help from "~/components/screens/help";
 import Landing from "~/components/screens/home";
 import Profile from "~/components/screens/profile";
 import Settings from "~/components/screens/settings";
-import Tools from "~/components/screens/tools";
+import Projects from "~/components/screens/projects";
+import Terminal from "~/components/screens/terminal";
 import Image from "next/image";
 import FluidSVGBackground from "~/components/fluid-svg-background";
 
@@ -33,7 +34,9 @@ function useIsCompatibleScreenSize() {
 
   useEffect(() => {
     function handleResize() {
-      setIsCompatibleScreenSize(window.innerWidth >= 1280 && window.innerHeight >= 700);
+      setIsCompatibleScreenSize(
+        window.innerWidth >= 1280 && window.innerHeight >= 700,
+      );
     }
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -46,12 +49,16 @@ function useIsCompatibleScreenSize() {
 function useToleranceCountExceeded() {
   const [toleranceCountExceeded, setToleranceCountExceeded] = useState(false);
   const countRef = useRef(0);
-  const prevStateRef = useRef<{ isPortrait: boolean; isCompatibleScreenSize: boolean } | null>(null);
+  const prevStateRef = useRef<{
+    isPortrait: boolean;
+    isCompatibleScreenSize: boolean;
+  } | null>(null);
 
   useEffect(() => {
     function checkAndUpdate() {
       const isPortrait = window.matchMedia("(orientation: portrait)").matches;
-      const isCompatibleScreenSize = window.innerWidth >= 1380 && window.innerHeight >= 700;
+      const isCompatibleScreenSize =
+        window.innerWidth >= 1380 && window.innerHeight >= 700;
 
       if (prevStateRef.current === null) {
         prevStateRef.current = { isPortrait, isCompatibleScreenSize };
@@ -100,10 +107,11 @@ export default function Home() {
     <Landing key="landing" />,
     <Profile key="profile" />,
     <Files key="files" />,
-    <Tools key="tools" />,
+    <Projects key="projects" />,
     <About key="about" />,
     <Settings key="settings" />,
     <Help key="help" />,
+    <Terminal key="terminal" />,
   ];
 
   if (!isClient) {
@@ -112,7 +120,7 @@ export default function Home() {
 
   if (toleranceCountExceeded) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center animated-gradient text-black">
+      <div className="animated-gradient flex h-screen w-screen items-center justify-center text-black">
         <Image
           src="/job-application.png"
           alt="Tolerance Exceeded"
@@ -129,7 +137,9 @@ export default function Home() {
       <div className="flex h-screen w-screen items-center justify-center text-black">
         <FluidSVGBackground />
         <h1 className="text-4xl font-light">
-          MINIMUM RESOLUTION 1280x700<br />CURRENT RESOLUTION {window.innerWidth}x{window.innerHeight}
+          MINIMUM RESOLUTION 1280x700
+          <br />
+          CURRENT RESOLUTION {window.innerWidth}x{window.innerHeight}
         </h1>
       </div>
     );
@@ -142,7 +152,7 @@ export default function Home() {
         // animate={{ opacity: 1 }}
         // transition={{ duration: 1 }}
         // exit={{ opacity: 0 }}
-        className={`flex max-h-900 min-w-300 flex-row items-center justify-between overflow-hidden text-black `}
+        className={`flex max-h-900 min-w-300 flex-row items-center justify-between overflow-hidden text-black`}
       >
         <FluidSVGBackground />
         <div className={`flex h-[100vh] max-h-screen w-1/2 flex-col`}>
@@ -152,14 +162,20 @@ export default function Home() {
         </div>
         <motion.div
           initial={{ x: 800, y: window.innerHeight / 12, opacity: 0 }}
-          animate={{ x: 10, y: window.innerHeight / 12, rotateZ: -10, opacity: 1, scale: 0.95 }}
+          animate={{
+            x: 10,
+            y: window.innerHeight / 12,
+            rotateZ: -10,
+            opacity: 1,
+            scale: 0.95,
+          }}
           transition={{
             type: "spring",
             stiffness: 10,
             damping: 5,
           }}
-        // whileHover={{ scale: 0.96 }}
-        // whileTap={{ scale: 0.95 }}
+          // whileHover={{ scale: 0.96 }}
+          // whileTap={{ scale: 0.95 }}
         >
           <motion.div
             animate={{
@@ -187,9 +203,12 @@ export default function Home() {
                 ease: "easeInOut",
               },
             }}
-            className="flex h-100 max-h-screen w-130 flex-col gap-8 p-8"
+            className="flex max-h-screen flex-col gap-8 rounded-4xl bg-gradient-to-br from-pink-300 to-pink-500 p-8 md:w-130"
           >
-            <App selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+            <Device
+              selectedItem={selectedItem}
+              setSelectedItem={setSelectedItem}
+            />
           </motion.div>
         </motion.div>
       </motion.div>

@@ -21,9 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={``}>
       <SpeedInsights />
-      <body>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

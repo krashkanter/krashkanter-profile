@@ -1,10 +1,15 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Orbitron } from "next/font/google";
+import { Orbitron, Meera_Inimai } from "next/font/google";
 import { TextMorph } from "~/components/textMorph";
 
 const orbitron = Orbitron({
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const meera = Meera_Inimai({
   subsets: ["latin"],
   weight: "400",
 });
@@ -16,7 +21,7 @@ export default function Landing() {
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         exit={{ y: -100, opacity: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className={`${orbitron.className} flex h-1/3 items-center justify-center`}
       >
         <TextMorph strings={["KrashKanter", "Keerthan"]} loop={true} />
@@ -25,10 +30,10 @@ export default function Landing() {
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         exit={{ y: 100, opacity: 0 }}
-        transition={{ duration: 0.6 }}
-        className="flex h-2/3 -translate-x-40 items-end justify-center text-black"
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className={`${meera.className} flex h-2/3 items-center justify-start p-4 text-4xl text-white`}
       >
-        THIS IS KEERTHAN
+        Scroll on the device or click sections to continue
       </motion.div>
     </>
   );
